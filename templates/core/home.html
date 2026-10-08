@@ -14,7 +14,7 @@
 </head>
 <body>
     {% block content %}
-        HOME
+        @HOME {{ request.user.email }}
     {% endblock content %}
 </body>
 </html>

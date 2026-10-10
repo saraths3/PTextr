@@ -1,0 +1,322 @@
+/* STREAMING_CHUNK:Defining Material 3 color tokens and variables... */
+:root {
+--m3-surface: #111318;
+--m3-surface-container: #1a1c22;
+--m3-surface-container-high: #24272e;
+--m3-primary: #d0bcff;
+--m3-on-primary: #381e72;
+--m3-primary-container: #4f378b;
+--m3-on-primary-container: #eaddff;
+--m3-outline: #8e9099;
+--m3-outline-variant: #44474f;
+--m3-on-surface: #e3e2e6;
+--m3-on-surface-variant: #c4c6d0;
+--m3-error: #ffb4ab;
+--m3-error-container: #93000a;
+--m3-transition: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* STREAMING_CHUNK:Reset and base layout setup... */
+
+{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body.m3-body {
+background-color: var(--m3-surface);
+color: var(--m3-on-surface);
+display: flex;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* STREAMING_CHUNK:Styling the Material 3 Expressive Compact Sidebar... */
+.m3-sidebar {
+width: 260px;
+background-color: var(--m3-surface-container);
+border-right: 1px solid var(--m3-outline-variant);
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+padding: 16px 12px;
+height: 100vh;
+position: fixed;
+top: 0;
+left: 0;
+z-index: 100;
+transition: width 0.3s var(--m3-transition), transform 0.3s var(--m3-transition);
+}
+
+.m3-sidebar.collapsed {
+width: 88px;
+}
+
+/* Brand container with profile avatar replacing logo */
+.m3-brand-container {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 8px 12px 24px 12px;
+border-bottom: 1px solid var(--m3-outline-variant);
+margin-bottom: 16px;
+}
+
+.m3-profile-avatar-btn {
+background: none;
+border: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+}
+
+.m3-avatar-badge {
+width: 44px;
+height: 44px;
+background-color: var(--m3-primary-container);
+color: var(--m3-on-primary-container);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.2s ease, background-color 0.2s ease;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.m3-profile-avatar-btn:hover .m3-avatar-badge {
+transform: scale(1.05);
+background-color: var(--m3-primary);
+color: var(--m3-on-primary);
+}
+
+.m3-collapse-toggle {
+background: transparent;
+border: none;
+color: var(--m3-on-surface-variant);
+cursor: pointer;
+width: 36px;
+height: 36px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background-color 0.2s ease;
+}
+
+.m3-collapse-toggle:hover {
+background-color: var(--m3-surface-container-high);
+color: var(--m3-on-surface);
+}
+
+.m3-sidebar.collapsed .m3-collapse-toggle {
+transform: rotate(180deg);
+}
+
+/* STREAMING_CHUNK:Styling Navigation menu items & pills... */
+.m3-nav-menu, .m3-nav-footer {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.m3-nav-item {
+display: flex;
+align-items: center;
+text-decoration: none;
+color: var(--m3-on-surface-variant);
+padding: 4px 8px;
+border-radius: 28px;
+transition: background-color 0.2s ease, color 0.2s ease;
+position: relative;
+}
+
+.m3-nav-pill {
+width: 48px;
+height: 48px;
+border-radius: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background-color 0.2s ease, color 0.2s ease;
+flex-shrink: 0;
+}
+
+.m3-nav-label {
+margin-left: 12px;
+font-size: 0.9375rem;
+font-weight: 500;
+white-space: nowrap;
+opacity: 1;
+transition: opacity 0.2s ease, width 0.2s ease;
+}
+
+.m3-sidebar.collapsed .m3-nav-label {
+opacity: 0;
+width: 0;
+pointer-events: none;
+overflow: hidden;
+}
+
+.m3-nav-item:hover {
+color: var(--m3-on-surface);
+}
+
+.m3-nav-item:hover .m3-nav-pill {
+background-color: var(--m3-surface-container-high);
+}
+
+.m3-nav-item.active {
+color: var(--m3-on-primary-container);
+}
+
+.m3-nav-item.active .m3-nav-pill {
+background-color: var(--m3-primary-container);
+color: var(--m3-on-primary-container);
+}
+
+.m3-logout-item:hover .m3-nav-pill {
+background-color: var(--m3-error-container);
+color: var(--m3-error);
+}
+
+/* STREAMING_CHUNK:Styling main content area & Topbar... */
+.m3-main-content {
+margin-left: 260px;
+flex-grow: 1;
+display: flex;
+flex-direction: column;
+transition: margin-left 0.3s var(--m3-transition);
+min-height: 100vh;
+}
+
+.m3-main-content.expanded {
+margin-left: 88px;
+}
+
+.m3-topbar {
+height: 72px;
+background-color: var(--m3-surface);
+border-bottom: 1px solid var(--m3-outline-variant);
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 32px;
+position: sticky;
+top: 0;
+z-index: 99;
+}
+
+.m3-mobile-menu-btn {
+display: none;
+background: none;
+border: none;
+color: var(--m3-on-surface);
+cursor: pointer;
+}
+
+.m3-topbar-title h1 {
+font-size: 1.25rem;
+font-weight: 600;
+color: var(--m3-on-surface);
+}
+
+.m3-status-chip {
+display: flex;
+align-items: center;
+gap: 8px;
+background-color: var(--m3-surface-container);
+padding: 6px 14px;
+border-radius: 20px;
+font-size: 0.85rem;
+border: 1px solid var(--m3-outline-variant);
+}
+
+.m3-status-dot {
+width: 8px;
+height: 8px;
+background-color: #6dd58c;
+border-radius: 50%;
+box-shadow: 0 0 8px #6dd58c;
+}
+
+/* STREAMING_CHUNK:Styling page content wrapper & demo cards... */
+.m3-content-wrapper {
+padding: 32px;
+display: flex;
+flex-direction: column;
+gap: 24px;
+max-width: 1400px;
+width: 100%;
+}
+
+.m3-hero-card {
+background: linear-gradient(135deg, var(--m3-surface-container), var(--m3-surface-container-high));
+border: 1px solid var(--m3-outline-variant);
+padding: 32px;
+border-radius: 24px;
+}
+
+.m3-hero-card h2 {
+font-size: 1.75rem;
+margin-bottom: 8px;
+color: var(--m3-primary);
+}
+
+.m3-hero-card p {
+color: var(--m3-on-surface-variant);
+}
+
+.m3-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 20px;
+}
+
+.m3-card {
+background-color: var(--m3-surface-container);
+border: 1px solid var(--m3-outline-variant);
+padding: 24px;
+border-radius: 20px;
+}
+
+.m3-card h3 {
+font-size: 0.95rem;
+color: var(--m3-on-surface-variant);
+margin-bottom: 12px;
+font-weight: 500;
+}
+
+.m3-stat {
+font-size: 2rem;
+font-weight: 700;
+color: var(--m3-on-surface);
+}
+
+.text-green {
+color: #6dd58c;
+}
+
+/* STREAMING_CHUNK:Media queries for responsive viewports... */
+@media (max-width: 768px) {
+.m3-sidebar {
+transform: translateX(-100%);
+width: 260px !important;
+}
+.m3-sidebar.mobile-open {
+transform: translateX(0);
+}
+.m3-main-content, .m3-main-content.expanded {
+margin-left: 0 !important;
+}
+.m3-mobile-menu-btn {
+display: block;
+}
+.m3-topbar {
+padding: 0 16px;
+}
+.m3-content-wrapper {
+padding: 16px;
+}
+}

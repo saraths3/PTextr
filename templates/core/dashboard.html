@@ -14,7 +14,13 @@
 </head>
 <body>
     {% block content %}
-        @HOME {{ request.user.email }}
+        @Dashboard {{ request.user.email }}
+        <div>{{ request.user.first_name }} {{ request.user.last_name }}</div>
+        <form action="" method="post" enctype="multipart/form-data">
+            {{form.avatar}}
+            {% csrf_token %}
+            <button type="submit">Update Avatar</button>
+        </form>
     {% endblock content %}
 </body>
 </html>

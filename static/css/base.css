@@ -1,322 +1,286 @@
-/* STREAMING_CHUNK:Defining Material 3 color tokens and variables... */
+/* ==========================================================================
+   Material 3 Expressive Dark Theme - Token Design System & Navigation
+   ========================================================================== */
+
 :root {
---m3-surface: #111318;
---m3-surface-container: #1a1c22;
---m3-surface-container-high: #24272e;
---m3-primary: #d0bcff;
---m3-on-primary: #381e72;
---m3-primary-container: #4f378b;
---m3-on-primary-container: #eaddff;
---m3-outline: #8e9099;
---m3-outline-variant: #44474f;
---m3-on-surface: #e3e2e6;
---m3-on-surface-variant: #c4c6d0;
---m3-error: #ffb4ab;
---m3-error-container: #93000a;
---m3-transition: cubic-bezier(0.2, 0, 0, 1);
+  /* Color Palette Tokens (Material 3 Dark Spec) */
+  --md-sys-color-background: #141218;
+  --md-sys-color-surface: #141218;
+  --md-sys-color-surface-container-low: #1d1b20;
+  --md-sys-color-surface-container: #2b2930;
+  --md-sys-color-surface-container-high: #36343b;
+  --md-sys-color-surface-container-highest: #49454f;
+  
+  --md-sys-color-on-surface: #e6e0e9;
+  --md-sys-color-on-surface-variant: #cac4d0;
+  --md-sys-color-outline: #938f99;
+  --md-sys-color-outline-variant: #49454f;
+  
+  --md-sys-color-primary: #d0bcff;
+  --md-sys-color-on-primary: #381e72;
+  --md-sys-color-primary-container: #4f378b;
+  --md-sys-color-on-primary-container: #eaddff;
+  
+  --md-sys-color-error: #f2b8b5;
+  --md-sys-color-on-error: #601410;
+
+  /* Shape Tokens (M3 Expressive Radii) */
+  --md-sys-shape-corner-card: 28px;
+  --md-sys-shape-corner-pill: 9999px;
+  --md-sys-shape-corner-icon: 14px;
+  --md-sys-shape-corner-small: 8px;
+
+  /* Typography */
+  --md-sys-typescale-font: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+  /* Elevation & Shadows */
+  --md-sys-elevation-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+  --md-sys-elevation-2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+  
+  /* Motion Parameters */
+  --md-sys-motion-standard: 200ms cubic-bezier(0.2, 0.0, 0.0, 1.0);
 }
 
-/* STREAMING_CHUNK:Reset and base layout setup... */
-
-{
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-font-family: 'Plus Jakarta Sans', sans-serif;
+/* Base Resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body.m3-body {
-background-color: var(--m3-surface);
-color: var(--m3-on-surface);
-display: flex;
-min-height: 100vh;
-overflow-x: hidden;
+body {
+  font-family: var(--md-sys-typescale-font);
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-surface);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* STREAMING_CHUNK:Styling the Material 3 Expressive Compact Sidebar... */
-.m3-sidebar {
-width: 260px;
-background-color: var(--m3-surface-container);
-border-right: 1px solid var(--m3-outline-variant);
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-padding: 16px 12px;
-height: 100vh;
-position: fixed;
-top: 0;
-left: 0;
-z-index: 100;
-transition: width 0.3s var(--m3-transition), transform 0.3s var(--m3-transition);
+/* ==========================================================================
+   Top Navigation Bar (Material 3 App Bar)
+   ========================================================================== */
+
+.m3-top-app-bar {
+  background-color: var(--md-sys-color-surface-container-low);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 12px 24px;
 }
 
-.m3-sidebar.collapsed {
-width: 88px;
+.m3-app-bar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Brand container with profile avatar replacing logo */
-.m3-brand-container {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 8px 12px 24px 12px;
-border-bottom: 1px solid var(--m3-outline-variant);
-margin-bottom: 16px;
+/* Brand Section */
+.m3-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-sys-shape-corner-pill);
+  padding: 4px 8px 4px 4px;
+  transition: background-color var(--md-sys-motion-standard);
 }
 
-.m3-profile-avatar-btn {
-background: none;
-border: none;
-cursor: pointer;
-display: flex;
-align-items: center;
+.m3-brand-link:hover {
+  background-color: rgba(230, 224, 233, 0.08);
 }
 
-.m3-avatar-badge {
-width: 44px;
-height: 44px;
-background-color: var(--m3-primary-container);
-color: var(--m3-on-primary-container);
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: transform 0.2s ease, background-color 0.2s ease;
-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.m3-brand-icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--md-sys-color-primary);
+  border-radius: var(--md-sys-shape-corner-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.m3-profile-avatar-btn:hover .m3-avatar-badge {
-transform: scale(1.05);
-background-color: var(--m3-primary);
-color: var(--m3-on-primary);
+.m3-brand-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--md-sys-color-on-primary);
 }
 
-.m3-collapse-toggle {
-background: transparent;
-border: none;
-color: var(--m3-on-surface-variant);
-cursor: pointer;
-width: 36px;
-height: 36px;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: background-color 0.2s ease;
+.m3-brand-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
-.m3-collapse-toggle:hover {
-background-color: var(--m3-surface-container-high);
-color: var(--m3-on-surface);
-}
-
-.m3-sidebar.collapsed .m3-collapse-toggle {
-transform: rotate(180deg);
-}
-
-/* STREAMING_CHUNK:Styling Navigation menu items & pills... */
-.m3-nav-menu, .m3-nav-footer {
-display: flex;
-flex-direction: column;
-gap: 8px;
+/* Navigation Links Group */
+.m3-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
 }
 
 .m3-nav-item {
-display: flex;
-align-items: center;
-text-decoration: none;
-color: var(--m3-on-surface-variant);
-padding: 4px 8px;
-border-radius: 28px;
-transition: background-color 0.2s ease, color 0.2s ease;
-position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.m3-nav-pill {
-width: 48px;
-height: 48px;
-border-radius: 24px;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: background-color 0.2s ease, color 0.2s ease;
-flex-shrink: 0;
+.m3-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--md-sys-shape-corner-pill);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: background-color var(--md-sys-motion-standard),
+              color var(--md-sys-motion-standard);
+  position: relative;
+  overflow: hidden;
 }
 
-.m3-nav-label {
-margin-left: 12px;
-font-size: 0.9375rem;
-font-weight: 500;
-white-space: nowrap;
-opacity: 1;
-transition: opacity 0.2s ease, width 0.2s ease;
+.m3-nav-link svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
-.m3-sidebar.collapsed .m3-nav-label {
-opacity: 0;
-width: 0;
-pointer-events: none;
-overflow: hidden;
+.m3-nav-link:hover {
+  background-color: rgba(230, 224, 233, 0.08);
+  color: var(--md-sys-color-on-surface);
 }
 
-.m3-nav-item:hover {
-color: var(--m3-on-surface);
+/* Active State Badge Style */
+.m3-nav-link.active {
+  background-color: var(--md-sys-color-secondary-container, var(--md-sys-color-surface-container-high));
+  color: var(--md-sys-color-primary);
+  font-weight: 600;
 }
 
-.m3-nav-item:hover .m3-nav-pill {
-background-color: var(--m3-surface-container-high);
+.m3-nav-link:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
 }
 
-.m3-nav-item.active {
-color: var(--m3-on-primary-container);
+/* Log Out Expressive Button */
+.m3-logout-form {
+  margin-left: 8px;
 }
 
-.m3-nav-item.active .m3-nav-pill {
-background-color: var(--m3-primary-container);
-color: var(--m3-on-primary-container);
+.m3-logout-btn {
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-error);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: var(--md-sys-shape-corner-pill);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--md-sys-motion-standard),
+              border-color var(--md-sys-motion-standard);
 }
 
-.m3-logout-item:hover .m3-nav-pill {
-background-color: var(--m3-error-container);
-color: var(--m3-error);
+.m3-logout-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
-/* STREAMING_CHUNK:Styling main content area & Topbar... */
-.m3-main-content {
-margin-left: 260px;
-flex-grow: 1;
-display: flex;
-flex-direction: column;
-transition: margin-left 0.3s var(--m3-transition);
-min-height: 100vh;
+.m3-logout-btn:hover {
+  background-color: rgba(242, 184, 181, 0.08);
+  border-color: var(--md-sys-color-error);
 }
 
-.m3-main-content.expanded {
-margin-left: 88px;
+/* Main Content Area */
+.m3-main-container {
+  flex: 1;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
 }
 
-.m3-topbar {
-height: 72px;
-background-color: var(--m3-surface);
-border-bottom: 1px solid var(--m3-outline-variant);
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0 32px;
-position: sticky;
-top: 0;
-z-index: 99;
+/* Footer Area */
+.m3-footer {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  padding: 24px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  background-color: var(--md-sys-color-surface-container-low);
 }
 
+/* Mobile Toggle Controls */
 .m3-mobile-menu-btn {
-display: none;
-background: none;
-border: none;
-color: var(--m3-on-surface);
-cursor: pointer;
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--md-sys-shape-corner-small);
 }
 
-.m3-topbar-title h1 {
-font-size: 1.25rem;
-font-weight: 600;
-color: var(--m3-on-surface);
+.m3-mobile-menu-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
 }
 
-.m3-status-chip {
-display: flex;
-align-items: center;
-gap: 8px;
-background-color: var(--m3-surface-container);
-padding: 6px 14px;
-border-radius: 20px;
-font-size: 0.85rem;
-border: 1px solid var(--m3-outline-variant);
-}
+/* Mobile Responsive Drawer Navigation */
+@media (max-width: 900px) {
+  .m3-mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.m3-status-dot {
-width: 8px;
-height: 8px;
-background-color: #6dd58c;
-border-radius: 50%;
-box-shadow: 0 0 8px #6dd58c;
-}
+  .m3-nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--md-sys-color-surface-container);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    padding: 16px 24px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    box-shadow: var(--md-sys-elevation-2);
+  }
 
-/* STREAMING_CHUNK:Styling page content wrapper & demo cards... */
-.m3-content-wrapper {
-padding: 32px;
-display: flex;
-flex-direction: column;
-gap: 24px;
-max-width: 1400px;
-width: 100%;
-}
+  .m3-nav-links.open {
+    display: flex;
+  }
 
-.m3-hero-card {
-background: linear-gradient(135deg, var(--m3-surface-container), var(--m3-surface-container-high));
-border: 1px solid var(--m3-outline-variant);
-padding: 32px;
-border-radius: 24px;
-}
+  .m3-nav-link {
+    width: 100%;
+    justify-content: flex-start;
+  }
 
-.m3-hero-card h2 {
-font-size: 1.75rem;
-margin-bottom: 8px;
-color: var(--m3-primary);
-}
+  .m3-logout-form {
+    margin-left: 0;
+    width: 100%;
+  }
 
-.m3-hero-card p {
-color: var(--m3-on-surface-variant);
-}
-
-.m3-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 20px;
-}
-
-.m3-card {
-background-color: var(--m3-surface-container);
-border: 1px solid var(--m3-outline-variant);
-padding: 24px;
-border-radius: 20px;
-}
-
-.m3-card h3 {
-font-size: 0.95rem;
-color: var(--m3-on-surface-variant);
-margin-bottom: 12px;
-font-weight: 500;
-}
-
-.m3-stat {
-font-size: 2rem;
-font-weight: 700;
-color: var(--m3-on-surface);
-}
-
-.text-green {
-color: #6dd58c;
-}
-
-/* STREAMING_CHUNK:Media queries for responsive viewports... */
-@media (max-width: 768px) {
-.m3-sidebar {
-transform: translateX(-100%);
-width: 260px !important;
-}
-.m3-sidebar.mobile-open {
-transform: translateX(0);
-}
-.m3-main-content, .m3-main-content.expanded {
-margin-left: 0 !important;
-}
-.m3-mobile-menu-btn {
-display: block;
-}
-.m3-topbar {
-padding: 0 16px;
-}
-.m3-content-wrapper {
-padding: 16px;
-}
+  .m3-logout-btn {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

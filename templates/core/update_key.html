@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    PTextr - Update Key
+{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/core/update_key.css' %}">
+
+<div class="m3-update-container">
+    <div class="m3-expressive-card">
+        <h2 class="m3-card-title">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            Update API Key
+        </h2>
+
+        <form action="" method="post" class="m3-update-form">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="m3-form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="m3-input-group">
+                <label for="{{ form.name.id_for_label }}" class="m3-input-label">Key Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <span class="m3-error-text">{{ form.name.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="m3-input-group">
+                <label for="{{ form.key.id_for_label }}" class="m3-input-label">API Key</label>
+                {{ form.key }}
+                {% if form.key.errors %}
+                    <span class="m3-error-text">{{ form.key.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="m3-form-actions">
+                <button type="submit" class="m3-btn-filled">Update</button>
+                <a href="{% url 'api-keys' %}" class="m3-btn-outlined">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

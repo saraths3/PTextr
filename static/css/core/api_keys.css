@@ -1,0 +1,235 @@
+/* ==========================================================================
+   Material 3 Expressive Dark Theme - API Keys Dashboard
+   ========================================================================== */
+
+.m3-api-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* Expressive Surface Card */
+.m3-expressive-card {
+  background-color: var(--md-sys-color-surface-container, #2b2930);
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  border-radius: var(--md-sys-shape-corner-card, 28px);
+  padding: 32px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.m3-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.m3-card-title svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--md-sys-color-primary, #d0bcff);
+}
+
+.m3-card-title.inactive-title svg {
+  fill: var(--md-sys-color-on-surface-variant, #cac4d0);
+}
+
+/* Form Styles */
+.m3-api-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 20px;
+  align-items: end;
+}
+
+.m3-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.m3-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+}
+
+.m3-text-input {
+  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
+  border: 1px solid var(--md-sys-color-outline, #938f99);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 200ms ease;
+}
+
+.m3-text-input:focus {
+  border-color: var(--md-sys-color-primary, #d0bcff);
+  border-width: 2px;
+  padding: 13px 17px;
+}
+
+/* Primary Filled Pill Button */
+.m3-btn-filled {
+  height: 50px;
+  background-color: var(--md-sys-color-primary, #d0bcff);
+  color: var(--md-sys-color-on-primary, #381e72);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0 28px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 200ms ease;
+}
+
+.m3-btn-filled:hover {
+  opacity: 0.9;
+}
+
+/* Django Alert Messages */
+.messages {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.alert {
+  padding: 16px 22px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  background-color: var(--md-sys-color-surface-container-high, #36343b);
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  border-left: 4px solid var(--md-sys-color-primary, #d0bcff);
+}
+
+/* Table Container */
+.m3-keys-wrapper {
+  overflow-x: auto;
+  border-radius: 20px;
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
+}
+
+.m3-key-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.m3-key-table th {
+  background-color: var(--md-sys-color-surface-container, #2b2930);
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #49454f);
+}
+
+.m3-key-table td {
+  padding: 18px 20px;
+  font-size: 0.9375rem;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  vertical-align: middle;
+}
+
+.m3-key-table tr:last-child td {
+  border-bottom: none;
+}
+
+.m3-key-code {
+  font-family: monospace;
+  background-color: var(--md-sys-color-surface-container-highest, #49454f);
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--md-sys-color-primary, #d0bcff);
+}
+
+/* Status Badges */
+.m3-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.m3-badge.active {
+  background-color: rgba(102, 187, 106, 0.15);
+  color: #81c784;
+}
+
+.m3-badge.inactive {
+  background-color: rgba(242, 184, 181, 0.15);
+  color: #f2b8b5;
+}
+
+/* Action Buttons */
+.m3-action-container {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.m3-action-btn {
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  color: var(--md-sys-color-primary, #d0bcff);
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 150ms ease;
+}
+
+.m3-action-btn:hover {
+  background-color: rgba(208, 188, 255, 0.08);
+}
+
+.m3-action-btn.danger {
+  color: var(--md-sys-color-error, #f2b8b5);
+  border-color: rgba(242, 184, 181, 0.3);
+}
+
+.m3-action-btn.danger:hover {
+  background-color: rgba(242, 184, 181, 0.08);
+}
+
+.m3-action-btn.success {
+  color: #81c784;
+  border-color: rgba(129, 199, 132, 0.3);
+}
+
+.m3-action-btn.success:hover {
+  background-color: rgba(129, 199, 132, 0.08);
+}
+
+/* Responsive Breakdown */
+@media (max-width: 860px) {
+  .m3-api-form {
+    grid-template-columns: 1fr;
+  }
+}

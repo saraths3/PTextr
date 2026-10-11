@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTextr - Unmasked API Key</title>
+    <style>
+        :root {
+            --md-sys-color-bg: #141218;
+            --md-sys-color-surface: #2b2930;
+            --md-sys-color-surface-low: #1d1b20;
+            --md-sys-color-primary: #d0bcff;
+            --md-sys-color-on-primary: #381e72;
+            --md-sys-color-primary-container: #4f378b;
+            --md-sys-color-on-primary-container: #eaddff;
+            --md-sys-color-on-surface: #e6e0e9;
+            --md-sys-color-on-surface-variant: #cac4d0;
+            --md-sys-color-outline: #938f99;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--md-sys-color-bg);
+            color: var(--md-sys-color-on-surface);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        /* Centered Card Container */
+        .m3-unmask-card {
+            background-color: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 28px;
+            padding: 32px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .m3-card-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .m3-card-title svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--md-sys-color-primary);
+        }
+
+        .m3-card-subtitle {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        /* Password / Input Wrapper */
+        .m3-unmask-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background-color: var(--md-sys-color-surface-low);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 16px;
+            padding: 8px 8px 8px 18px;
+            transition: border-color 200ms ease;
+        }
+
+        .m3-unmask-group:focus-within {
+            border-color: var(--md-sys-color-primary);
+            border-width: 2px;
+            padding: 7px 7px 7px 17px;
+        }
+
+        .m3-unmask-input {
+            background: transparent;
+            border: none;
+            color: var(--md-sys-color-primary);
+            font-family: monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            outline: none;
+            width: 100%;
+            user-select: none;
+        }
+
+        /* Icon Button */
+        .m3-icon-btn {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            border: none;
+            border-radius: 9999px;
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background-color 200ms ease, opacity 150ms ease;
+        }
+
+        .m3-icon-btn:hover {
+            opacity: 0.85;
+        }
+
+        .m3-icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Return Link */
+        .m3-back-link {
+            color: var(--md-sys-color-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .m3-back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="m3-unmask-card">
+        <div>
+            <h2 class="m3-card-title">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                Copy API Key
+            </h2>
+            <p class="m3-card-subtitle">
+                The key is masked for security. Click the button to copy it directly to your clipboard.
+            </p>
+        </div>
+
+        {% if key %}
+        <div class="m3-unmask-group">
+            <input type="password" id="apiKeyInput" class="m3-unmask-input" value="{{ key }}" readonly tabindex="-1">
+            <button type="button" class="m3-icon-btn" id="copyBtn" title="Copy key to clipboard">
+                <!-- Copy Icon -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+            </button>
+        </div>
+        {% endif %}
+
+        <div>
+            <a href="{% url 'api-keys' %}" class="m3-back-link">
+                &larr; Return to API Keys
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const secretValue = document.getElementById('apiKeyInput').value;
+            
+            // Copy directly from value without ever unmasking or revealing the text
+            navigator.clipboard.writeText(secretValue).then(() => {
+                const btn = this;
+                btn.style.backgroundColor = '#81c784';
+                btn.style.color = '#1d1b20';
+                btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>`;
+                
+                setTimeout(() => {
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                    btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy key: ', err);
+            });
+        });
+    </script>
+</body>
+</html>

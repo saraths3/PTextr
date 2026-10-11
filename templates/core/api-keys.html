@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}
+    Ptextr - API-Keys
+{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/core/api_keys.css' %}">
+
+<div class="m3-api-container">
+    
+    <!-- Add Key Form Card -->
+    <section class="m3-expressive-card">
+        <h2 class="m3-card-title">
+            <svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+            Add API Key
+        </h2>
+
+        <form action="" method="post" class="m3-api-form">
+            {% csrf_token %}
+            <div class="m3-input-group">
+                <label for="key-name" class="m3-input-label">Key Name</label>
+                <input type="text" name="key-name" id="key-name" class="m3-text-input" placeholder="APIkey Name" required>
+            </div>
+            <div class="m3-input-group">
+                <label for="api-key" class="m3-input-label">API Key</label>
+                <input type="password" name="api-key" id="api-key" class="m3-text-input" placeholder="APIkey" required>
+            </div>
+            <button type="submit" class="m3-btn-filled">Add Key</button>
+        </form>
+    </section>
+
+    <!-- Messages -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- ACTIVE KEYS -->
+    {% if active_keys %}
+    <section class="m3-expressive-card">
+        <h2 class="m3-card-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            ACTIVE KEY
+        </h2>
+
+        <div class="m3-keys-wrapper">
+            <table class="m3-key-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Secret Key</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for active_key in active_keys %}
+                    <tr>
+                        <td><strong>{{ active_key.name }}</strong></td>
+                        <td><span class="m3-key-code">{{ active_key.key|mask_value }}</span></td>
+                        <td><span class="m3-badge active">Active</span></td>
+                        <td>
+                            <div class="m3-action-container">
+                                <form action="{% url 'key_actions' active_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn danger">DEACTIVATE</button>
+                                </form>
+                                <form action="{% url 'update_key' active_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn">UPDATE</button>
+                                </form>
+                                <form action="{% url 'unmask_key' active_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn">UNMASK</button>
+                                </form>
+                                <form action="{% url 'remove_key' active_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn danger">REMOVE</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- INACTIVE KEYS -->
+    {% if inactive_keys %}
+    <section class="m3-expressive-card">
+        <h2 class="m3-card-title inactive-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            API KEYS
+        </h2>
+
+        <div class="m3-keys-wrapper">
+            <table class="m3-key-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Secret Key</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inactive_key in inactive_keys %}
+                    <tr>
+                        <td><strong>{{ inactive_key.name }}</strong></td>
+                        <td><span class="m3-key-code">{{ inactive_key.key|mask_value }}</span></td>
+                        <td><span class="m3-badge inactive">Inactive</span></td>
+                        <td>
+                            <div class="m3-action-container">
+                                <form action="{% url 'key_actions' inactive_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn success">ACTIVE</button>
+                                </form>
+                                <form action="{% url 'update_key' inactive_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn">UPDATE</button>
+                                </form>
+                                <form action="{% url 'unmask_key' inactive_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn">UNMASK</button>
+                                </form>
+                                <form action="{% url 'remove_key' inactive_key.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="m3-action-btn danger">REMOVE</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    {% endif %}
+
+</div>
+{% endblock content %}

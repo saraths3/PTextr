@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Material 3 Expressive Dark Theme - Token Design System
+   ========================================================================== */
+
+:root {
+  /* Color Palette Tokens (M3 Dark Spec) */
+  --md-sys-color-background: #141218;
+  --md-sys-color-surface: #141218;
+  --md-sys-color-surface-container: #2b2930;
+  --md-sys-color-surface-container-high: #36343b;
+  --md-sys-color-on-surface: #e6e0e9;
+  --md-sys-color-on-surface-variant: #cac4d0;
+  --md-sys-color-outline: #938f99;
+  --md-sys-color-outline-variant: #49454f;
+  --md-sys-color-primary: #d0bcff;
+  --md-sys-color-on-primary: #381e72;
+
+  /* Shape Tokens */
+  --md-sys-shape-corner-card: 32px;
+  --md-sys-shape-corner-pill: 9999px;
+  --md-sys-shape-corner-icon: 16px;
+
+  /* Typography Tokens */
+  --md-sys-typescale-font: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+  /* Elevation & Shadows */
+  --md-sys-elevation-level2: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
+  
+  /* Transitions */
+  --md-sys-motion-standard: 250ms cubic-bezier(0.2, 0.0, 0.0, 1.0);
+}
+
+/* Base resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--md-sys-typescale-font);
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-surface);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Main Container Card */
+.m3-card {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-card);
+  padding: 48px 36px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--md-sys-elevation-level2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Brand Header */
+.m3-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.m3-logo-badge {
+  width: 56px;
+  height: 56px;
+  background-color: var(--md-sys-color-primary);
+  border-radius: var(--md-sys-shape-corner-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.m3-logo-badge svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--md-sys-color-on-primary);
+}
+
+.m3-title {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 8px;
+}
+
+.m3-subtitle {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* OAuth Actions & Form Styling */
+.m3-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.m3-oauth-form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.m3-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: var(--md-sys-shape-corner-pill);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color var(--md-sys-motion-standard),
+              border-color var(--md-sys-motion-standard);
+}
+
+.m3-btn:hover {
+  background-color: rgba(230, 224, 233, 0.08);
+  border-color: var(--md-sys-color-outline);
+}
+
+.m3-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.m3-btn:active {
+  background-color: rgba(230, 224, 233, 0.12);
+}
+
+.m3-btn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Footer Section */
+.m3-footer {
+  margin-top: 32px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-footer a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+
+.m3-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Scaling for Small Mobile */
+@media (max-width: 440px) {
+  .m3-card {
+    padding: 36px 24px;
+    border-radius: 28px;
+  }
+}

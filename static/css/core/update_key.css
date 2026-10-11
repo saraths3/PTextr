@@ -1,0 +1,137 @@
+/* ==========================================================================
+   Material 3 Expressive Dark Theme - Update Key Form
+   ========================================================================== */
+
+.m3-update-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+  padding: 24px 16px;
+}
+
+.m3-expressive-card {
+  background-color: var(--md-sys-color-surface-container, #2b2930);
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  border-radius: var(--md-sys-shape-corner-card, 28px);
+  padding: 36px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.m3-card-title {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.m3-card-title svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--md-sys-color-primary, #d0bcff);
+}
+
+.m3-update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.m3-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.m3-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+}
+
+/* Target Django Form Fields directly to apply Material 3 text-input styling */
+.m3-update-form input[type="text"],
+.m3-update-form input[type="password"],
+.m3-update-form input[type="email"],
+.m3-update-form textarea {
+  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
+  border: 1px solid var(--md-sys-color-outline, #938f99);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 200ms ease;
+}
+
+.m3-update-form input[type="text"]:focus,
+.m3-update-form input[type="password"]:focus,
+.m3-update-form input[type="email"]:focus,
+.m3-update-form textarea:focus {
+  border-color: var(--md-sys-color-primary, #d0bcff);
+  border-width: 2px;
+  padding: 13px 17px;
+}
+
+.m3-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.m3-btn-filled {
+  flex: 1;
+  height: 48px;
+  background-color: var(--md-sys-color-primary, #d0bcff);
+  color: var(--md-sys-color-on-primary, #381e72);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.m3-btn-filled:hover {
+  opacity: 0.9;
+}
+
+.m3-btn-outlined {
+  flex: 1;
+  height: 48px;
+  background-color: transparent;
+  color: var(--md-sys-color-primary, #d0bcff);
+  border: 1px solid var(--md-sys-color-outline, #938f99);
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.m3-btn-outlined:hover {
+  background-color: rgba(208, 188, 255, 0.08);
+}
+
+.m3-error-text {
+  color: var(--md-sys-color-error, #f2b8b5);
+  font-size: 0.75rem;
+  margin-top: 2px;
+}

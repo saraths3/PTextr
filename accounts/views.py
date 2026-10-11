@@ -8,4 +8,4 @@ def LoignView(request):
 @login_required(login_url='login')
 def LogoutView(request):
     logout(request)
-    return redirect('home')
+    return redirect('login')

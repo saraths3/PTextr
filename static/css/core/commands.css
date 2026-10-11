@@ -1,0 +1,235 @@
+/* ==========================================================================
+   Material 3 Expressive Dark Theme - Commands Page
+   ========================================================================== */
+
+.m3-commands-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* Expressive Surface Card */
+.m3-expressive-card {
+  background-color: var(--md-sys-color-surface-container, #2b2930);
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  border-radius: var(--md-sys-shape-corner-card, 28px);
+  padding: 32px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.m3-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.m3-card-title svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--md-sys-color-primary, #d0bcff);
+}
+
+/* Add Command Form Layout */
+.m3-command-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 20px;
+  align-items: end;
+}
+
+.m3-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.m3-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+}
+
+/* Text Inputs */
+.m3-text-input {
+  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
+  border: 1px solid var(--md-sys-color-outline, #938f99);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 200ms ease;
+}
+
+.m3-text-input:focus {
+  border-color: var(--md-sys-color-primary, #d0bcff);
+  border-width: 2px;
+  padding: 13px 17px;
+}
+
+.m3-text-input.m3-input-sm {
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  border-radius: 12px;
+}
+
+.m3-text-input.m3-input-sm:focus {
+  padding: 9px 13px;
+}
+
+/* Buttons */
+.m3-btn-filled {
+  height: 50px;
+  background-color: var(--md-sys-color-primary, #d0bcff);
+  color: var(--md-sys-color-on-primary, #381e72);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0 28px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 200ms ease;
+}
+
+.m3-btn-filled:hover {
+  opacity: 0.9;
+}
+
+/* Flash Messages */
+.messages {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.alert {
+  padding: 16px 22px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  background-color: var(--md-sys-color-surface-container-high, #36343b);
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  border-left: 4px solid var(--md-sys-color-primary, #d0bcff);
+}
+
+/* Table & Row Layouts */
+.m3-commands-wrapper {
+  overflow-x: auto;
+  border-radius: 20px;
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
+}
+
+.m3-command-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.m3-command-table th {
+  background-color: var(--md-sys-color-surface-container, #2b2930);
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #49454f);
+}
+
+.m3-command-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant, #49454f);
+}
+
+.m3-command-table tr:last-child td {
+  border-bottom: none;
+}
+
+.m3-command-row-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.m3-inline-update-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.m3-inline-inputs {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  flex: 1;
+}
+
+.m3-inline-delete-form {
+  display: inline-flex;
+}
+
+/* Action Pill Buttons */
+.m3-action-btn {
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  color: var(--md-sys-color-primary, #d0bcff);
+  padding: 6px 16px;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 150ms ease;
+}
+
+.m3-action-btn:hover {
+  background-color: rgba(208, 188, 255, 0.08);
+}
+
+.m3-action-btn.danger {
+  color: var(--md-sys-color-error, #f2b8b5);
+  border-color: rgba(242, 184, 181, 0.3);
+}
+
+.m3-action-btn.danger:hover {
+  background-color: rgba(242, 184, 181, 0.08);
+}
+
+.m3-empty-state {
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  font-size: 0.9375rem;
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* Responsive Breakdown */
+@media (max-width: 860px) {
+  .m3-command-form {
+    grid-template-columns: 1fr;
+  }
+
+  .m3-command-row-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .m3-inline-inputs {
+    grid-template-columns: 1fr;
+  }
+}

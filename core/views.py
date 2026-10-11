@@ -18,8 +18,8 @@ def dashboard(request):
 def api_keys(request):
     if request.method == 'POST':
         user = request.user
-        name = request.POST.get('key-name').strip()
-        key = request.POST.get('api-key').strip()
+        name = request.POST.get('key-name', '').strip()
+        key = request.POST.get('api-key', '').strip()
         if request.user.is_authenticated:
             if name and key:
                 ApiKey.objects.create(user=user, name=name, key=key)
@@ -33,14 +33,13 @@ def api_keys(request):
         'active_keys': active_keys,
         'inactive_keys': inactive_keys,
     }
-    print(inactive_keys)
     return render(request, 'core/api-keys.html', context)
 
 @login_required(login_url='login')
 def remove_key(request, key_id):
     key = get_object_or_404(ApiKey, id=key_id, user=request.user)
     if request.method == 'POST':
-        messages.success(request, f'{key.name} removed successfully')
+        messages.success(request, f'{key.name} removed successfully.')
         key.delete()
     return redirect('api-keys')
 
@@ -75,6 +74,7 @@ def update_key(request, key_id):
             messages.success(request, f'{api_key} Updated.')
             return redirect('api-keys')
     form = APIUForm(instance=api_key)
+    form.fields['key'].initial = ''
     return render(request, 'core/update_key.html', {'form': form})
 
 @login_required(login_url='login')
@@ -87,8 +87,35 @@ def unmask_key(request, key_id):
 
 @login_required(login_url='login')
 def commands(request):
+
+    if request.method == 'POST':
+        command = request.POST.get('command-name', '').strip()
+        description = request.POST.get('commad-description', '').strip()
+        Commands.objects.create(user = request.user, command = command, descreption = description)
+
     all_commands = Commands.objects.filter(user = request.user)
     context = {
-        'commands': all_commands
+        'all_commands': all_commands
     }
-    return render(request, 'core/commands.html', commands)
+
+    return render(request, 'core/commands.html', context)
+
+@login_required(login_url='login')
+def update_command(request, c_id):
+    if request.method == 'POST':
+        command = request.POST.get('command', '').strip()
+        description = request.POST.get('descreption', '').strip()
+        command_ = get_object_or_404(Commands, id = c_id)
+        command_.command = command
+        command_.descreption = description
+        command_.save()
+        messages.success(request, f'{command} updated.')
+    return redirect('commands')
+
+@login_required(login_url='login')
+def delete_command(request, c_id):
+    if request.method == 'POST':
+        command = get_object_or_404(Commands, id = c_id, user = request.user)
+        messages.success(request, f'{command.command} deleted.')
+        command.delete()
+    return redirect('commands')

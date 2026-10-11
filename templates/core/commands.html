@@ -1,33 +1,93 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
-        PTtextr - Commands
-    {% endblock title %}
-</head>
-<body>
-    {% block content %}
-        <link rel="stylesheet" href="{% static 'css/core/commands.css' %}">
-        <table>
-            <tr>
-                <td>
-                    
-                </td>
-                <td>
-                    
-                </td>
-                <td>
-                    
-                </td>
-                <td>
-                    
-                </td>
-            </tr>
-        </table>
-    {% endblock content %}
-</body>
-</html>
+
+{% block title %}
+    PTtextr - Commands
+{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/core/commands.css' %}">
+
+<div class="m3-commands-container">
+
+    <!-- Add Command Card -->
+    <section class="m3-expressive-card">
+        <h2 class="m3-card-title">
+            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            ADD COMMANDS
+        </h2>
+
+        <form action="" method="post" class="m3-command-form">
+            {% csrf_token %}
+            <div class="m3-input-group">
+                <label for="command-name" class="m3-input-label">Command Name</label>
+                <input type="text" name="command-name" id="command-name" class="m3-text-input" placeholder="e.g. summarize" required>
+            </div>
+            <div class="m3-input-group">
+                <label for="commad-description" class="m3-input-label">Description</label>
+                <input type="text" name="commad-description" id="commad-description" class="m3-text-input" placeholder="e.g. Summarize input text" required>
+            </div>
+            <button type="submit" class="m3-btn-filled">ADD COMMAND</button>
+        </form>
+    </section>
+
+    <!-- Flash Messages -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- All Commands List -->
+    <section class="m3-expressive-card">
+        <h2 class="m3-card-title">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+            ALL COMMANDS
+        </h2>
+
+        {% if all_commands %}
+            <div class="m3-commands-wrapper">
+                <table class="m3-command-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for command in all_commands %}
+                        <tr>
+                            <td colspan="3">
+                                <div class="m3-command-row-container">
+                                    <form action="{% url 'update_command' command.id %}" method="post" class="m3-inline-update-form">
+                                        {% csrf_token %}
+                                        <div class="m3-inline-inputs">
+                                            <input type="text" value="{{ command.command }}" name="command" class="m3-text-input m3-input-sm" required>
+                                            <input type="text" value="{{ command.descreption }}" name="descreption" class="m3-text-input m3-input-sm" required>
+                                        </div>
+                                        <button type="submit" class="m3-action-btn">UPDATE</button>
+                                    </form>
+
+                                    <form action="{% url 'delete_command' command.id %}" method="post" class="m3-inline-delete-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="m3-action-btn danger">DELETE</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="m3-empty-state">No commands created yet. Use the form above to add your first command.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock content %}

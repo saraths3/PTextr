@@ -1,28 +1,151 @@
 /* ==========================================================================
-   Material 3 Expressive Dark Theme - Dashboard Layout
+   Material 3 Pure Dark Theme - Dashboard Stylesheet
    ========================================================================== */
 
-/* Dashboard Layout Grid */
+:root {
+  --m3-surface: #0f0e11;
+  --m3-surface-container: #1d1b20;
+  --m3-surface-container-low: #141218;
+  --m3-outline-variant: #49454f;
+  --m3-on-surface: #e6e0e9;
+  --m3-on-surface-variant: #cac4d0;
+  --m3-primary: #d0bcff;
+  --m3-on-primary: #381e72;
+}
+
 .m3-dashboard-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: 1fr 380px;
   gap: 24px;
-  align-items: start;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
-/* Base Expressive Card Container */
+@media (max-width: 1024px) {
+  .m3-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.m3-main-col,
+.m3-side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Expressive Cards */
 .m3-expressive-card {
-  background-color: var(--md-sys-color-surface-container, #2b2930);
-  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
-  border-radius: var(--md-sys-shape-corner-card, 28px);
+  background-color: var(--m3-surface-container);
+  border: 1px solid var(--m3-outline-variant);
+  border-radius: 28px;
   padding: 32px;
-  box-shadow: var(--md-sys-elevation-1, 0px 1px 3px rgba(0, 0, 0, 0.2));
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Welcome Banner */
+.m3-welcome-banner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.m3-avatar-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: var(--m3-primary);
+  color: var(--m3-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.m3-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.m3-user-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.m3-user-name {
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--m3-on-surface);
+  margin: 0;
+}
+
+.m3-user-email-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--m3-surface-container-low);
+  border: 1px solid var(--m3-outline-variant);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  color: var(--m3-on-surface-variant);
+  width: fit-content;
+}
+
+.m3-user-email-chip svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--m3-primary);
+}
+
+/* Stats Row */
+.m3-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .m3-stats-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.m3-stat-card {
+  background-color: var(--m3-surface-container);
+  border: 1px solid var(--m3-outline-variant);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.m3-stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--m3-primary);
+}
+
+.m3-stat-label {
+  font-size: 0.8125rem;
+  color: var(--m3-on-surface-variant);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Card Titles */
 .m3-card-title {
   font-size: 1.25rem;
   font-weight: 500;
-  color: var(--md-sys-color-on-surface, #e6e0e9);
+  color: var(--m3-on-surface);
+  margin-top: 0;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -32,219 +155,102 @@
 .m3-card-title svg {
   width: 22px;
   height: 22px;
-  fill: var(--md-sys-color-primary, #d0bcff);
+  fill: var(--m3-primary);
 }
 
-/* User Welcome Banner Card */
-.m3-welcome-banner {
-  background: linear-gradient(135deg, var(--md-sys-color-surface-container, #2b2930) 0%, var(--md-sys-color-surface-container-high, #36343b) 100%);
+/* Account Side Column */
+.m3-account-content {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 24px;
-  position: relative;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--m3-on-surface-variant);
+  font-size: 0.9375rem;
 }
-/* Avatar Container */
-.m3-avatar-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--md-sys-shape-corner-pill, 9999px);
-  background-color: var(--md-sys-color-primary-container, #4f378b);
-  color: var(--md-sys-color-on-primary-container, #eaddff);
+
+.m3-account-desc {
+  margin: 0;
+}
+
+.m3-account-box {
+  background-color: var(--m3-surface-container-low);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--m3-outline-variant);
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.m3-info-row {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 0 0 3px rgba(208, 188, 255, 0.2);
 }
 
-/* Image Avatar */
-.m3-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: inherit;
-  display: block;
-}
-
-/* Fallback Initial Text */
-.m3-avatar-initial {
-  font-size: 1.75rem;
+.m3-info-label {
+  color: var(--m3-on-surface);
   font-weight: 600;
-  text-transform: uppercase;
-  line-height: 1;
 }
 
-/* Avatar Circle Indicator */
-.m3-avatar-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--md-sys-shape-corner-pill, 9999px);
-  background-color: var(--md-sys-color-primary-container, #4f378b);
-  color: var(--md-sys-color-on-primary-container, #eaddff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.75rem;
-  font-weight: 600;
-  flex-shrink: 0;
-  text-transform: uppercase;
-  box-shadow: 0 0 0 4px rgba(208, 188, 255, 0.15);
+.m3-info-value {
+  color: var(--m3-on-surface-variant);
 }
 
-.m3-user-info-group {
+/* Messages */
+.m3-messages-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.m3-user-name {
-  font-size: 1.5rem;
+.m3-message-item {
+  color: var(--m3-primary);
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--md-sys-color-on-surface, #e6e0e9);
-  letter-spacing: -0.01em;
 }
 
-.m3-user-email-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 12px;
-  background-color: var(--md-sys-color-surface-container-highest, #49454f);
-  border-radius: var(--md-sys-shape-corner-pill, 9999px);
-  color: var(--md-sys-color-primary, #d0bcff);
-  font-size: 0.875rem;
-  font-weight: 500;
-  width: fit-content;
-}
-
-.m3-user-email-chip svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
-/* Avatar Form Controls */
-.m3-avatar-form {
+/* Token Box */
+.m3-token-display-box {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 6px;
 }
 
-.m3-file-input-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.m3-token-code {
+  background-color: var(--m3-surface);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--m3-primary);
+  word-break: break-all;
+  border: 1px solid var(--m3-outline-variant);
 }
 
-.m3-file-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+/* Pill Button */
+.m3-token-form {
+  margin-top: 4px;
 }
 
-/* Styling Django File Input widget cleanly */
-.m3-avatar-form input[type="file"] {
-  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
-  border: 1px dashed var(--md-sys-color-outline, #938f99);
-  border-radius: 16px;
-  padding: 16px;
-  color: var(--md-sys-color-on-surface-variant, #cac4d0);
-  font-family: inherit;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: border-color var(--md-sys-motion-standard, 200ms);
-  width: 100%;
-}
-
-.m3-avatar-form input[type="file"]:hover {
-  border-color: var(--md-sys-color-primary, #d0bcff);
-}
-
-/* M3 Filled Button for Form Action */
 .m3-btn-filled {
-  height: 48px;
-  background-color: var(--md-sys-color-primary, #d0bcff);
-  color: var(--md-sys-color-on-primary, #381e72);
+  width: 100%;
+  height: 44px;
+  background-color: var(--m3-primary);
+  color: var(--m3-on-primary);
   border: none;
-  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  border-radius: 9999px;
   font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 600;
-  display: inline-flex;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: opacity var(--md-sys-motion-standard, 200ms),
-              transform 150ms ease;
-  padding: 0 24px;
-}
-
-.m3-btn-filled svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
 }
 
 .m3-btn-filled:hover {
   opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.m3-btn-filled:active {
-  transform: translateY(0);
-}
-
-.m3-btn-filled:focus-visible {
-  outline: 2px solid var(--md-sys-color-primary, #d0bcff);
-  outline-offset: 3px;
-}
-
-/* Quick Metrics Row for Modern Workspace */
-.m3-stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.m3-stat-card {
-  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
-  border-radius: 20px;
-  padding: 20px;
-  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
-}
-
-.m3-stat-value {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface, #e6e0e9);
-}
-
-.m3-stat-label {
-  font-size: 0.8125rem;
-  color: var(--md-sys-color-on-surface-variant, #cac4d0);
-  margin-top: 4px;
-}
-
-/* Responsive Scaling */
-@media (max-width: 960px) {
-  .m3-dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 520px) {
-  .m3-welcome-banner {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-
-  .m3-user-email-chip {
-    margin: 0 auto;
-  }
 }

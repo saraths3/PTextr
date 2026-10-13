@@ -8,3 +8,9 @@ def mask_value(value):
     else:
         return '**********'
 
+@register.filter
+def limit_100(value):
+    if value:
+        return str(value)[:100] + '....'
+    else:
+        return ''

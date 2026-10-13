@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Profile, ApiKey, Commands
+from .models import Profile, ApiKey, Command, Setting, ExtensionToken
 
-# Register your models here.
-admin.site.register([Profile, ApiKey, Commands])
+admin.site.register([Profile, ApiKey, Command, Setting, ExtensionToken])

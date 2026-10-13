@@ -56,7 +56,7 @@ class ApiKey(models.Model):
         return f"{self.user.email.split('@')[0]}: {self.name[:9]}"
 
 
-class Commands(models.Model):
+class Command(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='commands')
     command = models.CharField(max_length=150)
     descreption = models.TextField()
@@ -66,3 +66,25 @@ class Commands(models.Model):
 
     def __str__(self):
         return f'{self.command}: {self.descreption[:10]}'
+
+class ExtensionToken(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='extension_token')
+    token_hash = models.CharField(max_length=556, unique=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'Extension token for user {self.user_id}'
+
+class Setting(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='setting')
+    model = models.CharField(max_length=150, blank=True)
+    trigger = models.CharField(max_length=25, default=';;')  
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.user.id}: {self.model}'  
+

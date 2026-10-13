@@ -37,7 +37,7 @@
         <ul class="messages">
             {% for message in messages %}
             <li class="alert alert-{{ message.tags }}">
-                {{ message }}
+                {{ message|limit_100 }}
             </li>
             {% endfor %}
         </ul>

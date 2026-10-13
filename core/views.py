@@ -4,15 +4,27 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import ApiKey, Commands
+from .models import ApiKey, Command, Setting
 from .form import APIUForm
+from django.http import JsonResponse
+from google import genai
+from google.genai.errors import APIError
+from .utils import generate_token
 
 
 @login_required(login_url='login')
 def dashboard(request):
     email = request.user.email
     username = email.split('@')[0]
-    return render(request, 'core/dashboard.html', {'username': username})
+    token=False
+    if request.method == 'POST':
+        token = generate_token(request.user)
+    context = {
+        'username' : username,
+    }
+    if token:
+        context['token'] = token
+    return render(request, 'core/dashboard.html', context)
 
 @login_required(login_url='login')
 def api_keys(request):
@@ -25,7 +37,7 @@ def api_keys(request):
                 ApiKey.objects.create(user=user, name=name, key=key)
                 messages.success(request, f'{name} Key Added.')
                 return redirect('api-keys')
-            
+
     active_keys = ApiKey.objects.filter(user=request.user, is_active=True).order_by('-id')
     inactive_keys = ApiKey.objects.filter(user=request.user, is_active=False).order_by('-id')
 
@@ -91,9 +103,9 @@ def commands(request):
     if request.method == 'POST':
         command = request.POST.get('command-name', '').strip()
         description = request.POST.get('commad-description', '').strip()
-        Commands.objects.create(user = request.user, command = command, descreption = description)
+        Command.objects.create(user = request.user, command = command, descreption = description)
 
-    all_commands = Commands.objects.filter(user = request.user)
+    all_commands = Command.objects.filter(user = request.user)
     context = {
         'all_commands': all_commands
     }
@@ -105,7 +117,7 @@ def update_command(request, c_id):
     if request.method == 'POST':
         command = request.POST.get('command', '').strip()
         description = request.POST.get('descreption', '').strip()
-        command_ = get_object_or_404(Commands, id = c_id)
+        command_ = get_object_or_404(Command, id = c_id)
         command_.command = command
         command_.descreption = description
         command_.save()
@@ -115,7 +127,56 @@ def update_command(request, c_id):
 @login_required(login_url='login')
 def delete_command(request, c_id):
     if request.method == 'POST':
-        command = get_object_or_404(Commands, id = c_id, user = request.user)
+        command = get_object_or_404(Command, id = c_id, user = request.user)
         messages.success(request, f'{command.command} deleted.')
         command.delete()
     return redirect('commands')
+
+
+@login_required(login_url='login')
+def settings(request):
+    setting = Setting.objects.filter(user=request.user).first()
+    key = ApiKey.objects.filter(is_active=True, user=request.user).first()
+    model_data = []
+    EXCLUDE_WORDS = ['preview', 'tts', 'transcribe', 'image', 'nano', 'banana', 'omni', 'pro', 'lite']
+    if key:
+        try:
+            client = genai.Client(api_key=key.get_decrypted_key())
+            for m in client.models.list():
+                model_name = m.name
+                if 'generateContent' in m.supported_actions:
+                    if (
+                        'gemini' in model_name
+                        and 'flash' in model_name
+                        and not any(kw in model_name for kw in EXCLUDE_WORDS)
+                    ):
+                        model_data.append(model_name.replace('models/', ''))
+        except APIError as e:
+            messages.error(request, f'Check your API Key, ACTIVE API KEY ERROR: {e}')
+            return redirect('api-keys')
+        except Exception as e:
+            messages.error(request, f'An unexpected error occurred: {e}')
+            return redirect('api-keys')
+    else:
+        messages.warning(request, 'Please configure and activate an API key first.')
+    if request.method == 'POST':
+        selected_model = request.POST.get('model')
+        selected_trigger = request.POST.get('flag', ';;')
+        if selected_model in model_data:
+            setting, created = Setting.objects.update_or_create(
+                user=request.user,
+                defaults={
+                    'model': selected_model,
+                    'trigger': selected_trigger
+                }
+            )
+            messages.success(request, 'Settings saved successfully!')
+            return redirect('settings')
+        else:
+            messages.error(request, 'Invalid model selection.')
+
+    context = {
+        'model_data': model_data,
+        'setting': setting,
+    }
+    return render(request, 'core/settings.html', context)

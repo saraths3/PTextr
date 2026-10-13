@@ -1,0 +1,108 @@
+/* ==========================================================================
+   Material 3 Expressive Dark Theme - Settings Page
+   ========================================================================== */
+
+.m3-settings-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+  padding: 24px 16px;
+}
+
+.m3-expressive-card {
+  background-color: var(--md-sys-color-surface-container, #2b2930);
+  border: 1px solid var(--md-sys-color-outline-variant, #49454f);
+  border-radius: var(--md-sys-shape-corner-card, 28px);
+  padding: 36px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.m3-card-title {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.m3-card-title svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--md-sys-color-primary, #d0bcff);
+}
+
+.m3-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.m3-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.m3-input-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--md-sys-color-on-surface-variant, #cac4d0);
+}
+
+.m3-text-input,
+.m3-select-input {
+  background-color: var(--md-sys-color-surface-container-low, #1d1b20);
+  border: 1px solid var(--md-sys-color-outline, #938f99);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: var(--md-sys-color-on-surface, #e6e0e9);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 200ms ease;
+}
+
+.m3-select-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cac4d0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 20px;
+  padding-right: 48px;
+}
+
+.m3-text-input:focus,
+.m3-select-input:focus {
+  border-color: var(--md-sys-color-primary, #d0bcff);
+  border-width: 2px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.m3-btn-filled {
+  height: 48px;
+  background-color: var(--md-sys-color-primary, #d0bcff);
+  color: var(--md-sys-color-on-primary, #381e72);
+  border: none;
+  border-radius: var(--md-sys-shape-corner-pill, 9999px);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.m3-btn-filled:hover {
+  opacity: 0.9;
+}

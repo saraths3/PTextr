@@ -7,13 +7,10 @@
 {% endblock title %}
 
 {% block content %}
-    <!-- Link your dashboard CSS -->
     <link rel="stylesheet" href="{% static 'css/core/dashboard.css' %}">
 
-    <!-- Fetch social account data for Google/GitHub avatars -->
     {% get_social_accounts request.user as social_accounts %}
 
-    <!-- Dashboard Layout Container -->
     <div class="m3-dashboard-grid">
         
         <!-- Left Main Column -->
@@ -22,28 +19,19 @@
             <!-- User Welcome Banner -->
             <section class="m3-expressive-card m3-welcome-banner">
                 <div class="m3-avatar-circle">
-                    
-                    <!-- Priority 1: Google / GitHub Social Provider Avatar (Fetched directly, zero DB storage) -->
                     {% if social_accounts %}
                         {% for provider, accounts in social_accounts.items %}
                             {% if forloop.first %}
                                 <img src="{{ accounts.0.get_avatar_url }}" alt="Social Avatar" class="m3-avatar-img">
                             {% endif %}
                         {% endfor %}
-                    
-                    <!-- Priority 2: User First Name Initial -->
                     {% elif request.user.first_name %}
                         <span class="m3-avatar-initial">{{ request.user.first_name|slice:":1" }}</span>
-                    
-                    <!-- Priority 3: User Email Initial -->
                     {% elif request.user.email %}
                         <span class="m3-avatar-initial">{{ request.user.email|slice:":1" }}</span>
-                    
-                    <!-- Priority 4: Default Fallback -->
                     {% else %}
                         <span class="m3-avatar-initial">P</span>
                     {% endif %}
-
                 </div>
 
                 <div class="m3-user-info-group">
@@ -57,7 +45,7 @@
 
                     <div class="m3-user-email-chip">
                         <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                        {{ request.user.email }}
+                        <span>{{ request.user.email }}</span>
                     </div>
                 </div>
             </section>
@@ -88,26 +76,43 @@
                     Account Info
                 </h2>
 
-                <div style="display: flex; flex-direction: column; gap: 16px; color: var(--md-sys-color-on-surface-variant); font-size: 0.9375rem;">
-                    <p>Authentication Provider connected via OAuth securely.</p>
-                    <div style="background-color: var(--md-sys-color-surface-container-low); padding: 14px; border-radius: 12px; border: 1px solid var(--md-sys-color-outline-variant);">
-                        <strong style="color: var(--md-sys-color-on-surface); display: block; margin-bottom: 4px;">Username :
-                        {% if username %}
-                            <span>{{ username }}</span>
-                        {% endif %}</strong>
+                <div class="m3-account-content">
+                    <p class="m3-account-desc">Authentication Provider connected via OAuth securely.</p>
+                    
+                    <div class="m3-account-box">
+                        <div class="m3-info-row">
+                            <span class="m3-info-label">Username:</span>
+                            {% if username %}
+                                <span class="m3-info-value">{{ username }}</span>
+                            {% else %}
+                                <span class="m3-info-value">{{ request.user.username }}</span>
+                            {% endif %}
+                        </div>
+
                         {% if messages %}
-                            <ul class="messages">
+                            <ul class="m3-messages-list">
                                 {% for message in messages %}
-                                <b><strong style="color: var(--md-sys-color-on-surface); display: block; margin-bottom: 4px;">
-                                    {{ message }}
-                                </strong>
-                                </b>
-                                   
+                                    <li class="m3-message-item">{{ message }}</li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
-                         <strong style="color: var(--md-sys-color-on-surface); display: block; margin-bottom: 4px;">ID : 
-                        <span>{{ request.user.id|stringformat:"s"|slice:"-25:" }}</span></strong>
+
+                        <div class="m3-info-row">
+                            <span class="m3-info-label">ID:</span>
+                            <span class="m3-info-value">{{ request.user.id|stringformat:"s"|slice:"-25:" }}</span>
+                        </div>
+
+                        {% if token %}
+                            <div class="m3-token-display-box">
+                                <span class="m3-info-label">Token:</span>
+                                <code class="m3-token-code">{{ token }}</code>
+                            </div>
+                        {% else %}
+                            <form method="post" class="m3-token-form">
+                                {% csrf_token %}
+                                <button type="submit" class="m3-btn-filled">Generate Token</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

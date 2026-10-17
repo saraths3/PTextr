@@ -9,8 +9,12 @@ from .form import APIUForm
 from google import genai
 from google.genai.errors import APIError
 from .utils import generate_token
+from django.views.decorators.cache import cache_control
+from django.views.decorators.vary import vary_on_cookie
 
 
+@vary_on_cookie
+@cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def dashboard(request):
     email = request.user.email
@@ -25,6 +29,8 @@ def dashboard(request):
         context['token'] = token
     return render(request, 'core/dashboard.html', context)
 
+@vary_on_cookie
+@cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def api_keys(request):
     if request.method == 'POST':
@@ -46,6 +52,8 @@ def api_keys(request):
     }
     return render(request, 'core/api-keys.html', context)
 
+@vary_on_cookie
+@cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def remove_key(request, key_id):
     key = get_object_or_404(ApiKey, id=key_id, user=request.user)
@@ -54,6 +62,8 @@ def remove_key(request, key_id):
         key.delete()
     return redirect('api-keys')
 
+@vary_on_cookie
+@cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def key_actions(request, key_id):
     key = get_object_or_404(ApiKey, id=key_id, user=request.user)
@@ -75,6 +85,9 @@ def key_actions(request, key_id):
             return redirect('api-keys')
     return redirect('api-keys')
 
+
+@vary_on_cookie
+@cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def update_key(request, key_id):
     api_key = get_object_or_404(ApiKey, id=key_id, user=request.user)
@@ -97,6 +110,8 @@ def unmask_key(request, key_id):
     return redirect('api-keys')
 
 
+@vary_on_cookie
+@cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def settings(request):
     setting = Setting.objects.filter(user=request.user).first()

@@ -42,7 +42,7 @@ def process_text(request):
 
     setting = Setting.objects.filter(user=user).first() 
     if not setting or not setting.model:
-        return Response({'error': 'Model not configured.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Setting Model not configured.'}, status=status.HTTP_400_BAD_REQUEST)
         
     try:
         client = genai.Client(api_key=decrypted_key)

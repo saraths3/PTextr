@@ -33,6 +33,7 @@
             <div class="m3-input-group">
                 <label for="model" class="m3-input-label">SELECT MODEL</label>
                 <select name="model" id="model" class="m3-select-input">
+                    <option value="" selected>SELECT MODEL</option>
                     {% for model in model_data %}
                         <option value="{{ model }}"
                             {% if setting and setting.model == model %}selected{% endif %}>

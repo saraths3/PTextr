@@ -34,15 +34,24 @@ def process_text(request):
     user = extension_token.user
     key = ApiKey.objects.filter(user=user, is_active=True).first()
     if not key:
-        return Response({'error': 'Active Key not Found.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {'error': 'Active Key not Found.'}, 
+            status=status.HTTP_400_BAD_REQUEST
+            )
         
     decrypted_key = key.get_decrypted_key()
     if not decrypted_key:
-        return Response({'error': 'Configured API key is empty or invalid.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {'error': 'Configured API key is empty or invalid.'}, 
+            status=status.HTTP_400_BAD_REQUEST
+            )
 
     setting = Setting.objects.filter(user=user).first() 
     if not setting or not setting.model:
-        return Response({'error': 'Setting Model not configured.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {'error': 'Setting Model not configured.'}, 
+            status=status.HTTP_400_BAD_REQUEST
+            )
         
     try:
         client = genai.Client(api_key=decrypted_key)
@@ -87,7 +96,10 @@ def process_text(request):
             model=setting.model, 
             contents=prompt,
         )
-        return Response({'output_text': response.text}, status=status.HTTP_200_OK)
+        return Response(
+            {'output_text': response.text}, 
+            status=status.HTTP_200_OK
+            )
         
     except errors.ClientError as e:
         if e.code == 429:

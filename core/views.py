@@ -12,7 +12,6 @@ from .utils import generate_token
 from django.views.decorators.cache import cache_control
 from django.views.decorators.vary import vary_on_cookie
 
-
 @vary_on_cookie
 @cache_control(private=True, no_store=True)
 @login_required(login_url='login')
@@ -39,12 +38,22 @@ def api_keys(request):
         key = request.POST.get('api-key', '').strip()
         if request.user.is_authenticated:
             if name and key:
-                ApiKey.objects.create(user=user, name=name, key=key)
+                ApiKey.objects.create(
+                    user=user, 
+                    name=name, 
+                    key=key
+                    )
                 messages.success(request, f'{name} Key Added.')
                 return redirect('api-keys')
 
-    active_keys = ApiKey.objects.filter(user=request.user, is_active=True).order_by('-id')
-    inactive_keys = ApiKey.objects.filter(user=request.user, is_active=False).order_by('-id')
+    active_keys = ApiKey.objects.filter(
+        user=request.user, 
+        is_active=True
+        ).order_by('-id')
+    inactive_keys = ApiKey.objects.filter(
+        user=request.user, 
+        is_active=False
+        ).order_by('-id')
 
     context = {
         'active_keys': active_keys,
@@ -56,7 +65,11 @@ def api_keys(request):
 @cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def remove_key(request, key_id):
-    key = get_object_or_404(ApiKey, id=key_id, user=request.user)
+    key = get_object_or_404(
+        ApiKey, 
+        id=key_id, 
+        user=request.user
+        )
     if request.method == 'POST':
         messages.success(request, f'{key.name} removed successfully.')
         key.delete()
@@ -66,7 +79,11 @@ def remove_key(request, key_id):
 @cache_control(private=True, no_store=True)
 @login_required(login_url='login')
 def key_actions(request, key_id):
-    key = get_object_or_404(ApiKey, id=key_id, user=request.user)
+    key = get_object_or_404(
+        ApiKey, 
+        id=key_id, 
+        user=request.user
+        )
     if request.method == 'POST':
         if key.is_active:
             key.is_active = False
@@ -75,7 +92,10 @@ def key_actions(request, key_id):
             return redirect('api-keys')
         else:
             key.is_active = True
-            activated_keys = ApiKey.objects.filter(user=request.user ,is_active=True)
+            activated_keys = ApiKey.objects.filter(
+                user=request.user,
+                is_active=True
+                )
             for ak in activated_keys:
                 ak.is_active = False
                 ak.save()
@@ -143,13 +163,11 @@ def settings(request):
         messages.warning(request, 'Please configure and activate an API key first.')
     if request.method == 'POST':
         selected_model = request.POST.get('model')
-        selected_trigger = request.POST.get('flag', ';;')
         if selected_model in model_data:
             setting, created = Setting.objects.update_or_create(
                 user=request.user,
                 defaults={
                     'model': selected_model,
-                    'trigger': selected_trigger
                 }
             )
             messages.success(request, 'Settings saved successfully!')

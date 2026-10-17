@@ -11,3 +11,5 @@ __pycache__/
 /staticfiles/
 
 .DS_Store
+
+shiva.py

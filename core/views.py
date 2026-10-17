@@ -4,9 +4,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import ApiKey, Command, Setting
+from .models import ApiKey, Setting
 from .form import APIUForm
-from django.http import JsonResponse
 from google import genai
 from google.genai.errors import APIError
 from .utils import generate_token
@@ -97,48 +96,16 @@ def unmask_key(request, key_id):
         return render(request, 'core/unmask_key.html', {'key': key})
     return redirect('api-keys')
 
-@login_required(login_url='login')
-def commands(request):
-
-    if request.method == 'POST':
-        command = request.POST.get('command-name', '').strip()
-        description = request.POST.get('commad-description', '').strip()
-        Command.objects.create(user = request.user, command = command, descreption = description)
-
-    all_commands = Command.objects.filter(user = request.user)
-    context = {
-        'all_commands': all_commands
-    }
-
-    return render(request, 'core/commands.html', context)
-
-@login_required(login_url='login')
-def update_command(request, c_id):
-    if request.method == 'POST':
-        command = request.POST.get('command', '').strip()
-        description = request.POST.get('descreption', '').strip()
-        command_ = get_object_or_404(Command, id = c_id)
-        command_.command = command
-        command_.descreption = description
-        command_.save()
-        messages.success(request, f'{command} updated.')
-    return redirect('commands')
-
-@login_required(login_url='login')
-def delete_command(request, c_id):
-    if request.method == 'POST':
-        command = get_object_or_404(Command, id = c_id, user = request.user)
-        messages.success(request, f'{command.command} deleted.')
-        command.delete()
-    return redirect('commands')
-
 
 @login_required(login_url='login')
 def settings(request):
     setting = Setting.objects.filter(user=request.user).first()
     key = ApiKey.objects.filter(is_active=True, user=request.user).first()
+    if not key:
+        messages.error(request, 'Add and active and API Key')
+        return redirect('api-keys')
     model_data = []
-    EXCLUDE_WORDS = ['preview', 'tts', 'transcribe', 'image', 'nano', 'banana', 'omni', 'pro', 'lite']
+    EXCLUDE_WORDS = ['preview', 'tts', 'transcribe', 'image', 'nano', 'banana', 'omni', 'pro', 'gemini-2']
     if key:
         try:
             client = genai.Client(api_key=key.get_decrypted_key())

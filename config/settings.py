@@ -34,7 +34,7 @@ DEBUG = config('DEBUG', cast=bool)
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', ).split(',')
 
 
 # Application definition

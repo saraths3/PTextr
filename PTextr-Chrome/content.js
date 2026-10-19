@@ -46,8 +46,10 @@
 
         const rawCommand = match[1];
         const commandStartIndex = match.index;
-        const originalText = trimmed.slice(0, commandStartIndex);
-        const command = rawCommand.replace(/_/g, ' ').trim();
+        // Trim trailing whitespace before the trigger from originalText
+        const originalText = trimmed.slice(0, commandStartIndex).replace(/[\s\u00A0\u200B]+$/, '');
+        // Preserve exact command identifier (e.g. expand_100_words)
+        const command = rawCommand.trim();
 
         return {
             originalText,

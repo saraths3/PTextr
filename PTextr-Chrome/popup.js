@@ -1,134 +1,235 @@
-// popup.js - PTextr Material 3 Settings & Connection Manager
+// popup.js - PTextr Minimal Settings & Setup Manager
 
-const DEFAULT_ENDPOINT = 'http://127.0.0.1:8000/api/process/';
+const DEFAULT_ENDPOINT = 'https://ptextr.onrender.com/api/process/';
+const LOCAL_ENDPOINT = 'http://127.0.0.1:8000/api/process/';
+const WEBSITE_URL = 'https://ptextr.onrender.com/';
+
+/**
+ * Normalizes an API endpoint to ensure valid protocol and trailing slash for Django DRF
+ */
+function normalizeEndpoint(rawEndpoint) {
+    if (!rawEndpoint || typeof rawEndpoint !== 'string') {
+        return DEFAULT_ENDPOINT;
+    }
+    const trimmed = rawEndpoint.trim();
+    if (!trimmed) return DEFAULT_ENDPOINT;
+
+    try {
+        const url = new URL(trimmed);
+        if (!url.pathname.endsWith('/')) {
+            url.pathname += '/';
+        }
+        return url.toString();
+    } catch {
+        return trimmed;
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Element references
+    const openWebsiteBtn = document.getElementById('openWebsiteBtn');
     const tokenInput = document.getElementById('tokenInput');
-    const endpointInput = document.getElementById('endpointInput');
     const toggleTokenVisibilityBtn = document.getElementById('toggleTokenVisibility');
     const visibilityIcon = document.getElementById('visibilityIcon');
-    const presetLocalBtn = document.getElementById('presetLocal');
-    const presetClearBtn = document.getElementById('presetClear');
     const saveBtn = document.getElementById('saveBtn');
-    const testBtn = document.getElementById('testBtn');
-    const testBtnText = document.getElementById('testBtnText');
+    const saveBtnText = document.getElementById('saveBtnText');
     const btnSpinner = document.getElementById('btnSpinner');
 
-    // Status Card references
-    const statusCard = document.getElementById('statusCard');
-    const statusIcon = document.getElementById('statusIcon');
-    const statusTitle = document.getElementById('statusTitle');
-    const statusBody = document.getElementById('statusBody');
+    const statusPill = document.getElementById('statusPill');
+    const statusLabel = document.getElementById('statusLabel');
 
-    // 2. Material 3 Status Card Updater
-    function updateStatus(state, title, message) {
-        statusCard.className = `m3-status-card ${state}`;
-        statusTitle.textContent = title;
-        statusBody.textContent = message;
+    const statusBanner = document.getElementById('statusBanner');
+    const statusIcon = document.getElementById('statusIcon');
+    const statusMsg = document.getElementById('statusMsg');
+
+    const endpointInput = document.getElementById('endpointInput');
+    const presetProdBtn = document.getElementById('presetProd');
+    const presetLocalBtn = document.getElementById('presetLocal');
+
+    // 2. Status updater
+    function updateStatus(state, message, iconChar = '⚡') {
+        statusBanner.className = `status-banner ${state}`;
+        statusIcon.textContent = iconChar;
+        statusMsg.textContent = message;
 
         switch (state) {
-            case 'success':
-                statusIcon.textContent = '✅';
+            case 'connected':
+                statusPill.className = 'status-pill status-connected';
+                statusLabel.textContent = 'Connected';
+                break;
+            case 'loading':
+                statusPill.className = 'status-pill status-loading';
+                statusLabel.textContent = 'Verifying...';
                 break;
             case 'error':
-                statusIcon.textContent = '⚠️';
-                break;
-            case 'info':
-                statusIcon.textContent = '⏳';
+                statusPill.className = 'status-pill status-error';
+                statusLabel.textContent = 'Error';
                 break;
             default:
-                statusIcon.textContent = '⚡';
+                statusPill.className = 'status-pill status-ready';
+                statusLabel.textContent = 'Ready';
                 break;
         }
     }
 
-    // 3. Load saved settings from Chrome extension storage
+    // 3. Load saved settings
     async function loadSettings() {
         try {
             const data = await chrome.storage.local.get(['extensionToken', 'apiEndpoint']);
+            const token = data.extensionToken ? data.extensionToken.trim() : '';
 
-            if (data.extensionToken) {
-                tokenInput.value = data.extensionToken;
+            if (token) {
+                tokenInput.value = token;
+                updateStatus('connected', 'Token configured. Ready to transform text.', '✅');
+            } else {
+                updateStatus('ready', 'Click "Visit PTextr Website" to get your token.', '⚡');
             }
 
-            endpointInput.value = data.apiEndpoint || DEFAULT_ENDPOINT;
+            if (endpointInput) {
+                endpointInput.value = data.apiEndpoint || DEFAULT_ENDPOINT;
+            }
         } catch (error) {
-            updateStatus('error', 'Storage Error', 'Unable to retrieve saved settings from browser.');
+            updateStatus('error', 'Unable to retrieve settings from storage.', '⚠️');
         }
     }
 
-    // 4. Save settings
-    async function saveSettings() {
-        const token = tokenInput.value.trim();
-        const endpoint = endpointInput.value.trim() || DEFAULT_ENDPOINT;
+    /**
+     * Ensures host permissions are granted for the given endpoint.
+     * In Firefox/Chrome MV3, requesting host permissions during user gesture ensures cross-origin access.
+     */
+    async function ensureHostPermission(endpointUrl) {
+        try {
+            const urlObj = new URL(endpointUrl);
+            const originPattern = `${urlObj.origin}/*`;
+            const api = (typeof browser !== 'undefined' && browser.permissions) ? browser : (typeof chrome !== 'undefined' && chrome.permissions ? chrome : null);
+            if (!api || !api.permissions) return true;
 
+            // Check if origin permission is already granted
+            const hasPermission = await new Promise((resolve) => {
+                try {
+                    const res = api.permissions.contains({ origins: [originPattern] }, (granted) => {
+                        if (typeof granted !== 'undefined') resolve(granted);
+                    });
+                    if (res && typeof res.then === 'function') {
+                        res.then(resolve).catch(() => resolve(false));
+                    }
+                } catch {
+                    resolve(false);
+                }
+            });
+
+            if (hasPermission) return true;
+
+            // Request permission during user click gesture
+            const granted = await new Promise((resolve) => {
+                try {
+                    const res = api.permissions.request({ origins: [originPattern] }, (allowed) => {
+                        if (typeof allowed !== 'undefined') resolve(allowed);
+                    });
+                    if (res && typeof res.then === 'function') {
+                        res.then(resolve).catch(() => resolve(false));
+                    }
+                } catch {
+                    resolve(false);
+                }
+            });
+
+            return !!granted;
+        } catch (e) {
+            console.warn('[PTextr] Permission check error:', e);
+            return true;
+        }
+    }
+
+    // 4. Save and Verify Token
+    async function saveAndVerify() {
+        const token = tokenInput.value.trim();
+        const rawEndpoint = endpointInput ? endpointInput.value.trim() : DEFAULT_ENDPOINT;
+        const endpoint = normalizeEndpoint(rawEndpoint || DEFAULT_ENDPOINT);
+
+        if (!token) {
+            updateStatus('error', 'Please enter your extension token before saving.', '⚠️');
+            tokenInput.focus();
+            return;
+        }
+
+        try {
+            new URL(endpoint);
+        } catch {
+            updateStatus('error', 'Invalid API endpoint URL. Please check advanced settings.', '⚠️');
+            return;
+        }
+
+        // Show loading state
+        saveBtn.disabled = true;
+        btnSpinner.style.display = 'inline-block';
+        saveBtnText.textContent = 'Verifying...';
+        updateStatus('loading', 'Connecting to PTextr backend...', '⏳');
+
+        // Persist settings first
         try {
             await chrome.storage.local.set({
                 extensionToken: token,
                 apiEndpoint: endpoint
             });
-
-            endpointInput.value = endpoint;
-            updateStatus('success', 'Settings Saved', 'Token and endpoint successfully stored.');
-        } catch (error) {
-            updateStatus('error', 'Save Failed', 'Could not persist settings to extension storage.');
+            if (endpointInput) {
+                endpointInput.value = endpoint;
+            }
+        } catch {
+            // Non-critical, continue verification
         }
-    }
 
-    // 5. Test Connection to Django Backend
-    async function testConnection() {
-        const token = tokenInput.value.trim();
-        const endpoint = endpointInput.value.trim() || DEFAULT_ENDPOINT;
-
-        if (!token) {
-            updateStatus('error', 'Token Required', 'Please enter your extension token before testing.');
-            tokenInput.focus();
+        // Ensure host permission is granted
+        const hasPermission = await ensureHostPermission(endpoint);
+        if (!hasPermission) {
+            saveBtn.disabled = false;
+            btnSpinner.style.display = 'none';
+            saveBtnText.textContent = 'Save & Connect';
+            let hostName = 'backend';
+            try { hostName = new URL(endpoint).host; } catch {}
+            updateStatus('error', `Permission required: Please allow access to ${hostName} when prompted, or enable it in browser extension permissions.`, '⚠️');
             return;
         }
 
-        // Show loading state
-        testBtn.disabled = true;
-        btnSpinner.style.display = 'inline-block';
-        testBtnText.textContent = 'Testing...';
-        updateStatus('info', 'Connecting', 'Sending verification ping to Django backend...');
-
+        // Send verify ping to background service worker
         try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    text: 'Connection test',
-                    command: 'test',
-                    token: token
-                })
-            });
+            chrome.runtime.sendMessage({
+                action: 'testConnection',
+                endpoint: endpoint,
+                token: token
+            }, (response) => {
+                saveBtn.disabled = false;
+                btnSpinner.style.display = 'none';
+                saveBtnText.textContent = 'Save & Connect';
 
-            if (response.ok) {
-                updateStatus('success', 'Connected', 'Backend verified! Ready to transform text.');
-            } else if (response.status === 401) {
-                updateStatus('error', 'Unauthorized (401)', 'Invalid extension token. Check your backend credentials.');
-            } else if (response.status === 403) {
-                updateStatus('error', 'Forbidden (403)', 'CSRF or permissions check failed. Ensure view allows token access.');
-            } else if (response.status === 404) {
-                updateStatus('error', 'Not Found (404)', 'Endpoint URL not found. Verify your Django URL pattern.');
-            } else if (response.status >= 500) {
-                updateStatus('error', `Server Error (${response.status})`, 'Django backend encountered an internal error.');
-            } else {
-                updateStatus('error', `HTTP Error (${response.status})`, `Backend returned status ${response.status}.`);
-            }
+                if (chrome.runtime.lastError) {
+                    updateStatus('error', chrome.runtime.lastError.message, '⚠️');
+                    return;
+                }
+
+                if (response && response.success) {
+                    updateStatus('connected', 'Token verified & ready! Type ;command; to transform text.', '✅');
+                } else {
+                    const errorMsg = (response && response.error) ? response.error : 'Connection verification failed.';
+                    updateStatus('error', errorMsg, '⚠️');
+                }
+            });
         } catch (err) {
-            updateStatus('error', 'Connection Failed', `Unable to reach ${endpoint}. Check that your Django server is running.`);
-        } finally {
-            testBtn.disabled = false;
+            saveBtn.disabled = false;
             btnSpinner.style.display = 'none';
-            testBtnText.textContent = 'Test Connection';
+            saveBtnText.textContent = 'Save & Connect';
+            updateStatus('error', 'Unable to communicate with background service worker.', '⚠️');
         }
     }
 
-    // 6. Event Listeners
+    // 5. Event Listeners
+    if (openWebsiteBtn) {
+        openWebsiteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            chrome.tabs.create({ url: WEBSITE_URL });
+        });
+    }
+
     toggleTokenVisibilityBtn.addEventListener('click', () => {
         if (tokenInput.type === 'password') {
             tokenInput.type = 'text';
@@ -139,17 +240,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    presetLocalBtn.addEventListener('click', () => {
-        endpointInput.value = DEFAULT_ENDPOINT;
+    saveBtn.addEventListener('click', saveAndVerify);
+
+    tokenInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            saveAndVerify();
+        }
     });
 
-    presetClearBtn.addEventListener('click', () => {
-        endpointInput.value = '';
-        endpointInput.focus();
-    });
+    if (presetProdBtn) {
+        presetProdBtn.addEventListener('click', () => {
+            if (endpointInput) endpointInput.value = DEFAULT_ENDPOINT;
+        });
+    }
 
-    saveBtn.addEventListener('click', saveSettings);
-    testBtn.addEventListener('click', testConnection);
+    if (presetLocalBtn) {
+        presetLocalBtn.addEventListener('click', () => {
+            if (endpointInput) endpointInput.value = LOCAL_ENDPOINT;
+        });
+    }
 
     // Initial load
     loadSettings();

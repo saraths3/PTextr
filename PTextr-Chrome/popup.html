@@ -3,76 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PTextr Settings</title>
+    <title>PTextr</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div class="m3-app-container">
-        <!-- Header -->
-        <header class="m3-header">
-            <div class="m3-headline-group">
-                <div class="m3-app-badge" aria-hidden="true">P</div>
+    <div class="popup-container">
+        <!-- Minimal Header -->
+        <header class="header">
+            <div class="brand">
+                <div class="brand-badge">P</div>
                 <div>
-                    <h1 class="m3-headline">PTextr</h1>
-                    <p class="m3-subhead">Transform text anywhere</p>
+                    <h1 class="brand-title">PTextr</h1>
+                    <span class="brand-sub">AI Text Transformation</span>
                 </div>
+            </div>
+            <div id="statusPill" class="status-pill status-ready">
+                <span class="status-dot"></span>
+                <span id="statusLabel">Ready</span>
             </div>
         </header>
 
-        <!-- Connection Status Card -->
-        <div id="statusCard" class="m3-status-card" role="status" aria-live="polite">
-            <div class="m3-status-icon" id="statusIcon">⚡</div>
-            <div class="m3-status-content">
-                <span class="m3-status-title" id="statusTitle">Backend Status</span>
-                <span class="m3-status-body" id="statusBody">Not tested yet. Tap "Test Connection" below.</span>
-            </div>
-        </div>
-
-        <!-- Token Card -->
-        <section class="m3-card">
-            <div class="m3-card-header">
-                <span class="m3-card-title">Authentication</span>
-            </div>
-            <div class="m3-field-group">
-                <label for="tokenInput" class="m3-label">Extension Token</label>
-                <div class="m3-input-wrapper">
-                    <input type="password" id="tokenInput" class="m3-input" placeholder="Paste your extension token" autocomplete="off">
-                    <button type="button" id="toggleTokenVisibility" class="m3-icon-btn" title="Toggle visibility" aria-label="Toggle token visibility">
-                        <span id="visibilityIcon">👁️</span>
-                    </button>
+        <!-- Step 1: Visit Website -->
+        <section class="step-card">
+            <div class="step-header">
+                <span class="step-badge">1</span>
+                <div>
+                    <h2 class="step-heading">Get your Token</h2>
+                    <p class="step-text">Create an account and copy your extension token.</p>
                 </div>
-                <p class="m3-supporting-text">Authenticates requests with your Django backend.</p>
             </div>
+            <a href="https://ptextr.onrender.com/" id="openWebsiteBtn" class="website-btn" target="_blank" rel="noopener noreferrer">
+                <span>Visit PTextr Website</span>
+                <span class="btn-arrow">↗</span>
+            </a>
         </section>
 
-        <!-- Endpoint Card -->
-        <section class="m3-card">
-            <div class="m3-card-header">
-                <span class="m3-card-title">Backend Endpoint</span>
-            </div>
-            <div class="m3-field-group">
-                <div class="m3-chips-row">
-                    <button type="button" id="presetLocal" class="m3-chip" aria-label="Set local endpoint">Local (127.0.0.1)</button>
-                    <button type="button" id="presetClear" class="m3-chip m3-chip-outline" aria-label="Clear endpoint">Clear</button>
+        <!-- Step 2: Enter Token -->
+        <section class="step-card">
+            <div class="step-header">
+                <span class="step-badge">2</span>
+                <div>
+                    <label for="tokenInput" class="step-heading">Enter API Token</label>
+                    <p class="step-text">Paste your token to enable AI text transformation.</p>
                 </div>
-                <input type="text" id="endpointInput" class="m3-input" placeholder="http://127.0.0.1:8000/api/process/">
-                <p class="m3-supporting-text">Target URL for processing text commands.</p>
             </div>
-        </section>
-
-        <!-- Action Buttons -->
-        <div class="m3-actions-row">
-            <button type="button" id="saveBtn" class="m3-btn m3-btn-tonal">Save</button>
-            <button type="button" id="testBtn" class="m3-btn m3-btn-primary">
-                <span class="m3-btn-spinner" id="btnSpinner"></span>
-                <span id="testBtnText">Test Connection</span>
+            <div class="input-wrapper">
+                <input type="password" id="tokenInput" class="input-field" placeholder="Paste your extension token" autocomplete="off" spellcheck="false">
+                <button type="button" id="toggleTokenVisibility" class="icon-btn" title="Toggle visibility" aria-label="Toggle token visibility">
+                    <span id="visibilityIcon">👁️</span>
+                </button>
+            </div>
+            <button type="button" id="saveBtn" class="primary-btn">
+                <span class="spinner" id="btnSpinner"></span>
+                <span id="saveBtnText">Save & Connect</span>
             </button>
+        </section>
+
+        <!-- Status Message Banner -->
+        <div id="statusBanner" class="status-banner" role="status" aria-live="polite">
+            <span id="statusIcon" class="status-banner-icon">⚡</span>
+            <span id="statusMsg" class="status-banner-msg">Enter token to connect.</span>
         </div>
 
-        <!-- Footer -->
-        <footer class="m3-footer">
-            <span>PTextr v1.0.0 • Local Development</span>
-        </footer>
+        <!-- Quick Hint -->
+        <div class="usage-hint">
+            <span>💡 <b>Usage:</b> Type <code>Hello ;expand_100_words;</code> in any text field.</span>
+        </div>
+
+        <!-- Collapsed Advanced Settings -->
+        <details class="advanced-drawer">
+            <summary class="advanced-summary">Advanced Settings</summary>
+            <div class="advanced-body">
+                <label for="endpointInput" class="advanced-label">API Endpoint</label>
+                <input type="text" id="endpointInput" class="advanced-input" placeholder="https://ptextr.onrender.com/api/process/">
+                <div class="advanced-presets">
+                    <button type="button" id="presetProd" class="chip-btn">Production</button>
+                    <button type="button" id="presetLocal" class="chip-btn">Local</button>
+                </div>
+            </div>
+        </details>
     </div>
 
     <script src="popup.js"></script>
